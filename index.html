@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backyard Ninja Gym Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./node_modules/three/build/three.module.js",
+          "three/addons/": "./node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="toolbar" aria-label="Toolbar">
+      <h1 class="app-title">Ninja Gym Planner</h1>
+      <div class="toolbar-actions">
+        <button type="button" id="btn-save" class="toolbar-btn" title="Save to browser">Save</button>
+        <button type="button" id="btn-export" class="toolbar-btn" title="Download JSON">Export</button>
+        <button type="button" id="btn-import" class="toolbar-btn" title="Import JSON file">Import</button>
+        <button type="button" id="btn-new" class="toolbar-btn" title="New project">New</button>
+        <span class="toolbar-sep" aria-hidden="true"></span>
+        <button type="button" id="btn-undo" class="toolbar-btn" disabled title="Undo (⌘Z)">Undo</button>
+        <button type="button" id="btn-redo" class="toolbar-btn" disabled title="Redo (⌘⇧Z)">Redo</button>
+        <span class="toolbar-sep" aria-hidden="true"></span>
+        <button type="button" id="btn-save-template" class="toolbar-btn" disabled title="Save selection as template">
+          Save template
+        </button>
+        <button type="button" id="btn-delete" class="toolbar-btn" disabled title="Delete (⌫)">
+          Delete
+        </button>
+        <button type="button" id="btn-explode" class="toolbar-btn" disabled title="Ungroup subsystem">
+          Explode
+        </button>
+      </div>
+      <input type="file" id="import-file" accept=".json,application/json" hidden />
+      <p class="toolbar-hint">Save restores on reload · ⌘Z undo · shift-click multi-select</p>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar sidebar-library" aria-label="Part library"></aside>
+
+      <main class="main-panel">
+        <div class="view-grid">
+          <section class="view-panel" data-view="top">
+            <header class="view-header">
+              <div class="view-header-titles">
+                <span class="view-title">Top View</span>
+                <span class="view-subtitle">X–Y · yard footprint</span>
+              </div>
+              <div class="view-zoom" data-zoom-view="top">
+                <button type="button" class="view-zoom-btn" data-zoom-action="out" title="Zoom out">−</button>
+                <span class="view-zoom-label" data-zoom-label="top">100%</span>
+                <button type="button" class="view-zoom-btn" data-zoom-action="in" title="Zoom in">+</button>
+                <button type="button" class="view-zoom-btn" data-zoom-action="reset" title="Reset view">⟲</button>
+              </div>
+            </header>
+            <div class="view-canvas" id="view-top"></div>
+          </section>
+
+          <section class="view-panel" data-view="front">
+            <header class="view-header">
+              <div class="view-header-titles">
+                <span class="view-title">Front View</span>
+                <span class="view-subtitle">X–Z · width &amp; height</span>
+              </div>
+              <div class="view-zoom" data-zoom-view="front">
+                <button type="button" class="view-zoom-btn" data-zoom-action="out" title="Zoom out">−</button>
+                <span class="view-zoom-label" data-zoom-label="front">100%</span>
+                <button type="button" class="view-zoom-btn" data-zoom-action="in" title="Zoom in">+</button>
+                <button type="button" class="view-zoom-btn" data-zoom-action="reset" title="Reset view">⟲</button>
+              </div>
+            </header>
+            <div class="view-canvas" id="view-front"></div>
+          </section>
+
+          <section class="view-panel" data-view="side">
+            <header class="view-header">
+              <div class="view-header-titles">
+                <span class="view-title">Side View</span>
+                <span class="view-subtitle">Y–Z · depth &amp; height</span>
+              </div>
+              <div class="view-zoom" data-zoom-view="side">
+                <button type="button" class="view-zoom-btn" data-zoom-action="out" title="Zoom out">−</button>
+                <span class="view-zoom-label" data-zoom-label="side">100%</span>
+                <button type="button" class="view-zoom-btn" data-zoom-action="in" title="Zoom in">+</button>
+                <button type="button" class="view-zoom-btn" data-zoom-action="reset" title="Reset view">⟲</button>
+              </div>
+            </header>
+            <div class="view-canvas" id="view-side"></div>
+          </section>
+
+          <section class="view-panel view-panel-3d" data-view="3d">
+            <header class="view-header">
+              <span class="view-title">3D View</span>
+              <span class="view-subtitle">drag to orbit · scroll to zoom</span>
+            </header>
+            <div class="view-3d-canvas" id="view-3d"></div>
+          </section>
+        </div>
+      </main>
+
+      <aside class="sidebar sidebar-props" aria-label="Properties">
+        <h2>Properties</h2>
+        <p class="sidebar-placeholder">Select an object to edit</p>
+      </aside>
+    </div>
+
+    <div id="boot-error" class="boot-error" hidden></div>
+    <div id="status-toast" class="status-toast" hidden></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
